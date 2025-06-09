@@ -1,14 +1,18 @@
 import { Routes, Route } from "react-router-dom"
-import { Layout } from "./pages/Layout."
+import { Layout } from "./pages/Layout"
 import { Home } from "./pages/Home"
+import ErrorPage from "./pages/ErrorPage"
+
 
 function App() {
   return (
     <Routes>
-      <Route element={<Layout />}>
+      <Route element={<Layout />} errorElement={<ErrorPage />}>
         <Route index element={<Home />} />
+        <Route path="*" element={<ErrorPage />} />
       </Route>
     </Routes>
+
   )
 }
 
