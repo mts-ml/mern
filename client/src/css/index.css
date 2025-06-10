@@ -1,0 +1,40 @@
+@import "tailwindcss";
+
+
+.custom-underline::after { 
+    content: "";
+    position: absolute;
+    background-color: black;
+    left: 0;
+    bottom: -5px;
+    height: 1px;
+    width: 100%;
+    transform: scaleX(0);
+    opacity: 0;
+    transform-origin: right;
+    transition: all 300ms ease-in-out;
+}
+
+.custom-underline:hover::after {
+    opacity: 100%;
+    transform: scaleX(1);
+}
+
+.custom-underline-white::after { 
+    content: "";
+    position: absolute;
+    background-color: white;
+    left: 0;
+    bottom: -5px;
+    height: 1px;
+    width: 100%;
+    transform: scaleX(0);
+    opacity: 0;
+    transform-origin: right;
+    transition: all 300ms ease-in-out;
+}
+
+.custom-underline-white:hover::after {
+    opacity: 100%;
+    transform: scaleX(1);
+}
