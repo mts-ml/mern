@@ -34,7 +34,7 @@ export const Register: React.FC = () => {
 
         if (!password) {
             error.password = "This field is required"
-        } else if (password.length <= 8) {
+        } else if (password.length < 8) {
             error.password = "Password need at least 8 characters"
         } else {
             const hasNumber = /\d/.test(password)
@@ -70,7 +70,7 @@ export const Register: React.FC = () => {
                 password: ''
             })
 
-            setSubmit(prevState => !prevState)
+            setSubmit(true)
         } catch (error) {
             console.log(error)
         }
@@ -84,7 +84,7 @@ export const Register: React.FC = () => {
             [name]: value
         }))
 
-        if (isSubmit) setSubmit(false)
+        setSubmit(false)
     }
 
 
