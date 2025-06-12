@@ -1,5 +1,8 @@
 import { Request, Response, NextFunction } from "express";
-import { UserProps } from "../types/registerTypes";
+import { LoginErrors, UserProps } from "../types/userTypes";
+import { addError } from "../utils/utils";
+
+
 
 
 export function formValidation(req: Request<{}, {}, UserProps>, res: Response, next: NextFunction) {
@@ -25,28 +28,36 @@ export function formValidation(req: Request<{}, {}, UserProps>, res: Response, n
         // Antes de adicionar a mensagem, verificamos se 'errors.email' já existe.
         // Se ainda não foi criada (ou seja, está undefined), usamos um array vazio como fallback.
         // Isso evita erros e permite adicionar a mensagem corretamente no array.
-        errors.email = [...(errors.email || []), "This field is required"]
-    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-        errors.email = [...(errors.email || []), "Invalid email address"]
+        // errors.email = [...(errors.email || []), message]
+        addError(errors, 'email', "This field is required")
+    }
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+        addError(errors, 'email', "Invalid email address")
     }
 
     if (!password) {
-        errors.password = [...(errors.password || []), 'This field is required']
-    } else if (password.length < 8) {
-        errors.password = [...(errors.password || []), 'Password needs at least 8 characters']
-    } else {
-        const hasNumber = /\d/.test(password)
-        const hasUpperCaseLetter = /[A-Z]/.test(password)
-        const hasSpecialCharacter = /[!@#$%^&*(),.?":{}|<>]/.test(password)
+        addError(errors, 'password', 'This field is required')
 
-        if (!hasNumber) {
-            errors.password = [...(errors.password || []), 'Password must contain at least one number']
-        } else if (!hasUpperCaseLetter) {
-            errors.password = [...(errors.password || []), 'Password must contain at least one uppercase letter']
-        } else if (!hasSpecialCharacter) {
-            errors.password = [...(errors.password || []), 'Password must contain at least one special character']
-        }
     }
+    if (password.length < 8) {
+        addError(errors, 'password', 'Password needs at least 8 characters')
+    }
+
+    
+    const hasNumber = /\d/.test(password)
+    const hasUpperCaseLetter = /[A-Z]/.test(password)
+    const hasSpecialCharacter = /[!@#$%^&*(),.?":{}|<>]/.test(password)
+
+    if (!hasNumber) {
+        addError(errors, 'password', 'Password must contain at least one number')
+    }
+    if (!hasUpperCaseLetter) {
+        addError(errors, 'password', 'Password must contain at least one uppercase letter')
+    }
+    if (!hasSpecialCharacter) {
+        addError(errors, 'password', 'Password must contain at least one special character')
+    }
+
 
     if (Object.keys(errors).length > 0) {
         res.status(400).json({ errors })
