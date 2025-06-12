@@ -1,5 +1,5 @@
 import mongoose from 'mongoose'
-import { UserProps } from '../types/registerTypes'
+import { UserProps } from '../types/userTypes'
 const Schema = mongoose.Schema
 
 
@@ -11,7 +11,8 @@ const userSchema = new Schema<UserProps>({
     password: {
         type: String,
         required: true
-    }
+    },
+    refreshToken: String
 })
 
 export const User = mongoose.model<UserProps>("User", userSchema)

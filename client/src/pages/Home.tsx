@@ -1,25 +1,22 @@
 import axios from "axios"
 import { useState } from "react"
 import { Link } from "react-router-dom"
-
-
-interface Login {
-    email: string
-    password: string
-}
+import type { UserProps } from "../types/UserTypes"
 
 
 export const Home: React.FC = () => {
-    const [form, setForm] = useState<Login>({
+    const [form, setForm] = useState<UserProps>({
         email: "",
         password: ""
     })
 
-    const [formErrors, setFormErrors] = useState<Partial<Login>>({})
+    const [formErrors, setFormErrors] = useState<Partial<UserProps> & { general?: string }>({})
+
+    const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false)
 
 
-    function formValidation(formData: Login): Partial<Login> {
-        const error: Partial<Login> = {}
+    function formValidation(formData: UserProps): Partial<UserProps> {
+        const error: Partial<UserProps> = {}
         const { email, password } = formData
 
         if (!email) {
@@ -34,21 +31,8 @@ export const Home: React.FC = () => {
         if (!password) {
             error.password = "This field is required"
         } else if (password.length <= 8) {
-            error.password = "Password need at least 8 characters"
-        } else {
-            const hasNumber = /\d/.test(password)
-            const hasUpperCaseLetter = /[A-Z]/.test(password)
-            const hasSpecialCharacter = /[!@#$%^&*(),.?":{}|<>]/.test(password)
-
-            if (!hasNumber) {
-                error.password = "Password must contain at least one number"
-            } else if (!hasUpperCaseLetter) {
-                error.password = "Password must contain at least one uppercase letter"
-            } else if (!hasSpecialCharacter) {
-                error.password = "Password must contain at least one special character"
-            }
+            error.password = "Password needs at least 8 characters"
         }
-
         return error
     }
 
@@ -63,13 +47,25 @@ export const Home: React.FC = () => {
 
         try {
             await axios.post(import.meta.env.VITE_API_URL + "/login", form)
-            console.log("Login feito com sucesso")
             setForm({
                 email: '',
                 password: ''
             })
+
+            setIsLoggedIn(true)
         } catch (error) {
-            console.log(error)
+            if (axios.isAxiosError(error)) {
+                if (error.response?.status === 401) {
+                    setFormErrors(prevState => ({
+                        ...prevState,
+                        general: "Invalid credentials"
+                    }))
+                } else {
+                    console.log(`Unexpected error - ${error.response?.data?.error}`)
+                }
+            } else {
+                console.log(`Unknown error - ${error}`)
+            }
         }
     }
 
@@ -80,6 +76,8 @@ export const Home: React.FC = () => {
             ...previousState,
             [name]: value
         }))
+
+        setIsLoggedIn(false)
     }
 
 
@@ -131,16 +129,34 @@ export const Home: React.FC = () => {
                 </div>
 
                 <p
-                    className="text-red-500 text-sm pt-1"
+                    className="text-red-500 text-sm pt-1 mb-6"
                     id="passwordError"
                     aria-live="polite"
                 >
                     {formErrors.password}
                 </p>
 
+                {formErrors.general &&
+                    <p
+                        className="text-red-500 text-sm mt-6 text-center"
+                        aria-live="polite"
+                    >
+                        {formErrors.general}
+                    </p>
+                }
+
+                {isLoggedIn &&
+                    <p
+                        className="text-green-600 font-medium text-sm mt-6 text-center"
+                        aria-live="polite"
+                    >
+                        Login successful! ✅
+                    </p>
+                }
+
                 <button
                     type="submit"
-                    className="block mt-8 mb-4 border rounded px-2 py-1 mx-auto cursor-pointer hover:bg-white/30 transition-colors duration-300 ease-in-out"
+                    className="block mt-3 mb-4 border rounded px-2 py-1 mx-auto cursor-pointer hover:bg-white/30 transition-colors duration-300 ease-in-out"
                 >
                     Sign In
                 </button>

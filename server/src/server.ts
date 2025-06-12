@@ -1,9 +1,13 @@
 import 'dotenv/config'
 import express, { NextFunction, Request, Response } from 'express'
-import register from './routes/register'
 import cors from 'cors'
 import mongoose from 'mongoose'
 import { connectDB } from './config/dbConn'
+
+import register from './routes/register'
+import login from './routes/login'
+import refresh from './routes/refresh'
+import teste from './routes/teste'
 
 
 const PORT = process.env.PORT || 3500
@@ -23,6 +27,9 @@ app.get('/', (req: Request, res: Response) => {
 })
 
 app.use('/register', register)
+app.use('/login', login)
+app.use('/refresh', refresh)
+app.use('/teste', teste)
 
 
 mongoose.connection.once('open', () => {

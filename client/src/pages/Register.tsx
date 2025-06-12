@@ -1,53 +1,55 @@
 import axios from "axios"
 import { useState } from "react"
+import type { LoginErrors, UserProps } from "../types/UserTypes"
 
 
-interface Login {
-    email: string
-    password: string
-}
+
 
 
 export const Register: React.FC = () => {
-    const [form, setForm] = useState<Login>({
+    const [form, setForm] = useState<UserProps>({
         email: "",
         password: ""
     })
 
-    const [formErrors, setFormErrors] = useState<Partial<Login>>({})
+    const [formErrors, setFormErrors] = useState<LoginErrors>({})
 
     const [isSubmit, setSubmit] = useState<boolean>(false)
 
 
-    function formValidation(formData: Login): Partial<Login> {
-        const error: Partial<Login> = {}
+    function formValidation(formData: UserProps): LoginErrors {
+        const error: LoginErrors = {}
         const { email, password } = formData
 
         if (!email) {
-            error.email = "This field is required"
+            error.email = [...(error.email || []), "This field is required"]
         } else {
             const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
             if (!emailRegex.test(email)) {
-                error.email = "Invalid email address"
+                error.email = [...(error.email || []), "Invalid email address"]
             }
         }
 
         if (!password) {
-            error.password = "This field is required"
-        } else if (password.length < 8) {
-            error.password = "Password need at least 8 characters"
-        } else {
-            const hasNumber = /\d/.test(password)
-            const hasUpperCaseLetter = /[A-Z]/.test(password)
-            const hasSpecialCharacter = /[!@#$%^&*(),.?":{}|<>]/.test(password)
+            error.password = [...(error.password || []), "This field is required"]
+        }
+        if (password.length < 8) {
+            error.password = [...(error.password || []), "Password need at least 8 characters"]
+        }
 
-            if (!hasNumber) {
-                error.password = "Password must contain at least one number"
-            } else if (!hasUpperCaseLetter) {
-                error.password = "Password must contain at least one uppercase letter"
-            } else if (!hasSpecialCharacter) {
-                error.password = "Password must contain at least one special character"
-            }
+
+        const hasNumber = /\d/.test(password)
+        const hasUpperCaseLetter = /[A-Z]/.test(password)
+        const hasSpecialCharacter = /[!@#$%^&*(),.?":{}|<>]/.test(password)
+
+        if (!hasNumber) {
+            error.password = [...(error.password || []), "Password must contain at least one number\n"]
+        }
+        if (!hasUpperCaseLetter) {
+            error.password = [...(error.password || []), "Password must contain at least one uppercase letter"]
+        }
+        if (!hasSpecialCharacter) {
+            error.password = [...(error.password || []), "Password must contain at least one special character"]
         }
 
         return error
@@ -72,7 +74,18 @@ export const Register: React.FC = () => {
 
             setSubmit(true)
         } catch (error) {
-            console.log(error)
+            if (axios.isAxiosError(error)) {
+                if (error.response?.status === 409) {
+                    setFormErrors(prevState => ({
+                        ...prevState,
+                        email: [...(prevState.email || []), "Email already registered"]
+                    }))
+                } else {
+                    console.log(`Unexpected error - ${error.response?.data?.error}`)                    
+                }             
+            } else {
+                console.log(`Unknown error - ${error}`)
+            }
         }
     }
 
@@ -111,13 +124,15 @@ export const Register: React.FC = () => {
                     />
                 </div>
 
-                <p
-                    className="text-red-500 text-sm pt-1"
+                <div className="text-red-500 text-sm pt-1"
                     id="emailError"
                     aria-live="polite"
                 >
-                    {formErrors.email}
-                </p>
+                    {formErrors.email?.map((error, index) => (
+                        <p key={index}>{error}</p>
+                    ))}
+                </div>
+
 
 
                 {/* PASSWORD */}
@@ -135,13 +150,15 @@ export const Register: React.FC = () => {
                     />
                 </div>
 
-                <p
+                <div
                     className="text-red-500 text-sm pt-1"
                     id="passwordError"
                     aria-live="polite"
                 >
-                    {formErrors.password}
-                </p>
+                    {formErrors.password?.map((error, index) => (
+                        <p key={index}>{error}</p>
+                    ))}
+                </div>
 
                 <button
                     type="submit"
