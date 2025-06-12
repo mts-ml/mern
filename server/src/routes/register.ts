@@ -6,4 +6,5 @@ import { handleNewUser } from '../controller/registerController'
 const router = express.Router()
 
 router.post('/', formValidation, handleNewUser)
+
 export default router
