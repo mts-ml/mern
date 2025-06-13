@@ -46,7 +46,11 @@ export const Home: React.FC = () => {
         if (Object.keys(errors).length > 0) return
 
         try {
-            await axios.post(import.meta.env.VITE_API_URL + "/login", form)
+            const response = await axios.post(import.meta.env.VITE_API_URL + "/login", form,
+                { withCredentials: true }
+            )
+            const accessToken: string = response?.data?.accessToken
+
             setForm({
                 email: '',
                 password: ''
@@ -59,6 +63,10 @@ export const Home: React.FC = () => {
                     setFormErrors(prevState => ({
                         ...prevState,
                         general: "Invalid credentials"
+                    }))
+                } else if (!error.response) {
+                    setFormErrors(prevState => ({
+                        ...prevState, general: "No server response"
                     }))
                 } else {
                     console.log(`Unexpected error - ${error.response?.data?.error}`)
@@ -164,7 +172,7 @@ export const Home: React.FC = () => {
 
                 <div className="mt-2 text-center">
                     <p>Need an account?</p>
-                    <h2><Link to='register' className="relative custom-underline-white">
+                    <h2><Link to='/register' className="relative custom-underline-white">
                         Sign Up
                     </Link></h2>
                 </div>
