@@ -8,10 +8,10 @@ interface CustomRequest extends Request {
 }
 
 
-export async function verifyAccessToken(req: Request, res: Response, next: NextFunction) {
+export async function verifyAccessToken(req: CustomRequest, res: Response, next: NextFunction) {
     const authHeader = req.headers['authorization']
     if (!authHeader || !authHeader.startsWith("Bearer ")) {
-        res.status(401).json({
+        res.status(400).json({
             error: "Token missing or invalid"
         })
         return
@@ -24,7 +24,7 @@ export async function verifyAccessToken(req: Request, res: Response, next: NextF
             process.env.ACCESS_TOKEN_SECRET!,
         ) as CustomJwtPayload
 
-        (req as CustomRequest).email = decoded.email
+        req.email = decoded.email
         next()
     } catch (error) {
         if (error instanceof jwt.TokenExpiredError) {
