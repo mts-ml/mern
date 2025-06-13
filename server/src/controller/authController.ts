@@ -45,9 +45,7 @@ export async function handleLogin(req: Request<{}, {}, UserProps>, res: Response
                 }
             )
 
-            res.json({
-                success: `User logged in! AccessToken - ${accessToken}`
-            })
+            res.json({ accessToken })
         } else {
             res.status(401).json({
                 error: "Invalid credentials"
