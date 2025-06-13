@@ -81,8 +81,8 @@ export const Register: React.FC = () => {
                         email: [...(prevState.email || []), "Email already registered"]
                     }))
                 } else {
-                    console.log(`Unexpected error - ${error.response?.data?.error}`)                    
-                }             
+                    console.log(`Unexpected error - ${error.response?.data?.error}`)
+                }
             } else {
                 console.log(`Unknown error - ${error}`)
             }
@@ -90,87 +90,95 @@ export const Register: React.FC = () => {
     }
 
     function handleInputChange(event: React.ChangeEvent<HTMLInputElement>) {
-        const { name, value } = event.currentTarget
+        const { name, value } = event.currentTarget as {
+            name: keyof UserProps,
+            value: string
+        }
 
-        setForm(previousState => ({
-            ...previousState,
-            [name]: value
+        const updatedForm = {...form, [name]: value}
+        setForm(updatedForm)
+
+        const validationErrors = formValidation(form)
+        setFormErrors(prevState => ({
+            ...prevState, [name]: validationErrors[name]
         }))
 
-        setSubmit(false)
-    }
+    setSubmit(false)
+}
 
 
-    return (
-        <main className="relative min-h-[calc(100vh-64px)] bg-stone-200">
-            <h1 className="pt-20 font-medium text-center">REGISTER</h1>
+return (
+    <main className="relative min-h-[calc(100vh-64px)] bg-stone-200">
+        <h1 className="pt-20 font-medium text-center">REGISTER</h1>
 
-            <form
-                onSubmit={handleSubmit}
-                className="text-white absolute left-1/2 top-1/2 -translate-1/2 p-8 bg-[#333] rounded w-1/3"
+        <form
+            onSubmit={handleSubmit}
+            className="text-white absolute left-1/2 top-1/2 -translate-1/2 p-8 bg-[#333] rounded w-1/3"
+        >
+            {/* EMAIL */}
+            <div className="flex flex-col">
+                <label htmlFor="email" className="font-medium cursor-pointer">E-mail:</label>
+                <input
+                    className="border rounded-[10px] pl-2 h-8"
+                    type="email"
+                    id="email"
+                    placeholder="example@gmail.com"
+                    name="email"
+                    value={form.email}
+                    onChange={handleInputChange}
+                    aria-describedby="emailError"
+                    aria-invalid={formErrors.email ? 'true' : 'false'}
+                />
+            </div>
+
+            <div className="text-red-500 text-sm pt-1"
+                id="emailError"
+                aria-live="polite"
             >
-                {/* EMAIL */}
-                <div className="flex flex-col">
-                    <label htmlFor="email" className="font-medium cursor-pointer">E-mail:</label>
-                    <input
-                        className="border rounded-[10px] pl-2 h-8"
-                        type="email"
-                        id="email"
-                        placeholder="example@gmail.com"
-                        name="email"
-                        value={form.email}
-                        onChange={handleInputChange}
-                        aria-describedby="emailError"
-                    />
-                </div>
-
-                <div className="text-red-500 text-sm pt-1"
-                    id="emailError"
-                    aria-live="polite"
-                >
-                    {formErrors.email?.map((error, index) => (
-                        <p key={index}>{error}</p>
-                    ))}
-                </div>
+                {formErrors.email?.map((error, index) => (
+                    <p key={index}>{error}</p>
+                ))}
+            </div>
 
 
 
-                {/* PASSWORD */}
-                <div className="flex flex-col mt-4">
-                    <label htmlFor="password" className="font-medium cursor-pointer">Password:</label>
-                    <input
-                        className="border rounded-[10px] pl-2 h-8"
-                        type="password"
-                        id="password"
-                        placeholder="example123&"
-                        name="password"
-                        value={form.password}
-                        onChange={handleInputChange}
-                        aria-describedby="passwordError"
-                    />
-                </div>
+            {/* PASSWORD */}
+            <div className="flex flex-col mt-4">
+                <label htmlFor="password" className="font-medium cursor-pointer">Password:</label>
+                <input
+                    className="border rounded-[10px] pl-2 h-8"
+                    type="password"
+                    id="password"
+                    placeholder="example123&"
+                    name="password"
+                    value={form.password}
+                    onChange={handleInputChange}
+                    aria-describedby="passwordError"
+                    aria-invalid={formErrors.password ? 'true' : 'false'}
+                />
+            </div>
 
-                <div
-                    className="text-red-500 text-sm pt-1"
-                    id="passwordError"
-                    aria-live="polite"
-                >
-                    {formErrors.password?.map((error, index) => (
-                        <p key={index}>{error}</p>
-                    ))}
-                </div>
+            <div
+                className="text-red-500 text-sm pt-1"
+                id="passwordError"
+                aria-live="polite"
+            >
+                {formErrors.password?.map((error, index) => (
+                    <p key={index}>{error}</p>
+                ))}
+            </div>
 
-                <button
-                    type="submit"
-                    className="block mt-8 mb-4 border rounded px-2 py-1 mx-auto cursor-pointer hover:bg-white/30 transition-colors duration-300 ease-in-out"
-                >
-                    Sign up
-                </button>
+            <button
+                type="submit"
+                className="block mt-8 mb-4 border rounded px-2 py-1 mx-auto cursor-pointer hover:bg-white/30 transition-colors duration-300 ease-in-out"
+            >
+                Sign up
+            </button>
 
-                {isSubmit &&
-                    <p className="text-center font-medium">Account successfully created!</p>
-                }
-            </form>
-        </main>
-    )
+            {isSubmit &&
+                <p className="text-center text-green-500 font-medium">Account successfully created!</p>
+            }
+        </form>
+    </main>
+)
 }
