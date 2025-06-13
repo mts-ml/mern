@@ -1,12 +1,14 @@
 import 'dotenv/config'
-import express, { NextFunction, Request, Response } from 'express'
+import express, { Request, Response } from 'express'
 import cors from 'cors'
+import cookieParser from 'cookie-parser'
 import mongoose from 'mongoose'
 import { connectDB } from './config/dbConn'
 
 import register from './routes/register'
 import login from './routes/login'
 import refresh from './routes/refresh'
+import logout from './routes/logout'
 import teste from './routes/teste'
 
 
@@ -17,8 +19,11 @@ const app = express()
 connectDB()
 
 app.use(express.json())
-
-app.use(cors())
+app.use(cors({
+    origin: "http://localhost:5173",
+    credentials: true
+}))
+app.use(cookieParser())
 
 app.get('/', (req: Request, res: Response) => {
     res.json({
@@ -30,6 +35,7 @@ app.use('/register', register)
 app.use('/login', login)
 app.use('/refresh', refresh)
 app.use('/teste', teste)
+app.use('/logout', logout)
 
 
 mongoose.connection.once('open', () => {
