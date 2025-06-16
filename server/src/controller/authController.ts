@@ -19,11 +19,19 @@ export async function handleLogin(req: Request<{}, {}, UserProps>, res: Response
 
         const matchPassword = await bcrypt.compare(password, foundUser.password)
         if (matchPassword) {
+            const roles = Object.values(foundUser.roles).filter(value => value !== undefined)
+
             const accessToken = jwt.sign(
-                { email: foundUser.email },
+                {
+                    UserInfo: {
+                        email: foundUser.email,
+                        roles
+                    }
+                },
                 process.env.ACCESS_TOKEN_SECRET!,
                 { expiresIn: "30s" }
             )
+            console.log(`authController - Roles ${roles}`)            
 
             const refreshToken = jwt.sign(
                 { email: foundUser.email },
