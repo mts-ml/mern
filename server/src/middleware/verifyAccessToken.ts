@@ -4,11 +4,12 @@ import { CustomJwtPayload } from "../types/userTypes";
 
 
 interface CustomRequest extends Request {
-    email: string
+    email?: string
+    roles?: number[]
 }
 
 
-export async function verifyAccessToken(req: CustomRequest, res: Response, next: NextFunction) {
+export function verifyAccessToken(req: CustomRequest, res: Response, next: NextFunction) {
     const authHeader = req.headers['authorization']
     if (!authHeader || !authHeader.startsWith("Bearer ")) {
         res.status(400).json({
@@ -24,7 +25,9 @@ export async function verifyAccessToken(req: CustomRequest, res: Response, next:
             process.env.ACCESS_TOKEN_SECRET!,
         ) as CustomJwtPayload
 
-        req.email = decoded.email
+        req.email = decoded.UserInfo.email
+        req.roles = decoded.UserInfo.roles
+
         next()
     } catch (error) {
         if (error instanceof jwt.TokenExpiredError) {
