@@ -18,6 +18,8 @@ export async function handleNewUser(req: Request<{}, {}, UserProps>, res: Respon
     try {
         const hashPassword = await bcrypt.hash(password, 10)
 
+        // Roles'll be created with User property
+        // Made default at User schema (BD)
         const newUser = await User.create({
             email,
             password: hashPassword
