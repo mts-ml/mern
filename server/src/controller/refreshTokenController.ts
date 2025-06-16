@@ -19,19 +19,25 @@ export async function handleRefreshToken(req: Request, res: Response) {
             res.sendStatus(403)
             return
         }
-
+        
         const decodedToken = jwt.verify(
             refreshToken,
             process.env.REFRESH_TOKEN_SECRET!,
         ) as CustomJwtPayload
-
-        if (decodedToken.email !== foundUser.email) {
+        
+        if (decodedToken.UserInfo.email !== foundUser.email) {
             res.sendStatus(403)
             return
         }
-
+        
+        const roles = Object.values(foundUser.roles).filter(value => value !== undefined)
         const newAccessToken = jwt.sign(
-            { email: foundUser.email },
+            {
+                UserInfo: {
+                    email: decodedToken.UserInfo.email,
+                    roles
+                }
+            },
             process.env.ACCESS_TOKEN_SECRET!,
             { expiresIn: '30s' }
         )
@@ -40,7 +46,7 @@ export async function handleRefreshToken(req: Request, res: Response) {
             success: `New access token: ${newAccessToken}`
         })
     } catch (error) {
-        console.log(error)        
+        console.log(error)
         res.sendStatus(500)
     }
 }

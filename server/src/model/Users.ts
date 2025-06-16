@@ -12,6 +12,14 @@ const userSchema = new Schema<UserProps>({
         type: String,
         required: true
     },
+    roles: {
+        User: {
+            type: Number,
+            default: 1010
+        },
+        Editor: Number,
+        Admin: Number
+    },
     refreshToken: String
 })
 

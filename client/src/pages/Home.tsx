@@ -1,14 +1,20 @@
 import axios from "axios"
-import { useState } from "react"
-import { Link } from "react-router-dom"
-import type { UserProps } from "../types/UserTypes"
+import { useContext, useState } from "react"
+import { Link, useNavigate } from "react-router-dom"
+import type { CustomJwtPayload, UserProps } from "../types/UserTypes"
+import { AuthContext } from "../Context/AuthProvider"
+import { jwtDecode } from "jwt-decode";
 
 
 export const Home: React.FC = () => {
+    const { setAuth } = useContext(AuthContext)
+
     const [form, setForm] = useState<UserProps>({
         email: "",
         password: ""
     })
+
+    const navigate = useNavigate()
 
     const [formErrors, setFormErrors] = useState<Partial<UserProps> & { general?: string }>({})
 
@@ -49,7 +55,15 @@ export const Home: React.FC = () => {
             const response = await axios.post(import.meta.env.VITE_API_URL + "/login", form,
                 { withCredentials: true }
             )
-            const accessToken: string = response?.data?.accessToken
+
+            const decoded = jwtDecode<CustomJwtPayload>(response.data.accessToken)
+
+            setAuth({
+                email: decoded.UserInfo?.email,
+                roles: decoded.UserInfo?.roles,
+                accessToken: response?.data?.accessToken,
+            })
+             console.log('Auth set:', decoded.UserInfo.roles)
 
             setForm({
                 email: '',
@@ -57,6 +71,10 @@ export const Home: React.FC = () => {
             })
 
             setIsLoggedIn(true)
+
+            setTimeout(() => {
+                navigate('/admin')
+            }, 1500)
         } catch (error) {
             if (axios.isAxiosError(error)) {
                 if (error.response?.status === 401) {
