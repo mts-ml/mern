@@ -6,7 +6,7 @@ import { ROLES_LIST } from '../config/roles_list'
 
 const router = express.Router()
 router.get('/', verifyAccessToken, verifyRoles(ROLES_LIST.Admin, ROLES_LIST.Editor), (req: Request, res: Response) => {
-    res.json({ success: "Página acessada" })
+    res.json({ success: "Mensagem vem do back-end - Página acessada" })
 })
 
 export default router

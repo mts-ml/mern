@@ -19,17 +19,18 @@ export async function handleRefreshToken(req: Request, res: Response) {
             res.sendStatus(403)
             return
         }
-        
+
         const decodedToken = jwt.verify(
             refreshToken,
             process.env.REFRESH_TOKEN_SECRET!,
         ) as CustomJwtPayload
-        
+
+
         if (decodedToken.UserInfo.email !== foundUser.email) {
             res.sendStatus(403)
             return
         }
-        
+
         const roles = Object.values(foundUser.roles).filter(value => value !== undefined)
         const newAccessToken = jwt.sign(
             {
@@ -42,10 +43,14 @@ export async function handleRefreshToken(req: Request, res: Response) {
             { expiresIn: '30s' }
         )
 
-        res.json({
-            success: `New access token: ${newAccessToken}`
-        })
+        res.json({ accessToken: newAccessToken })
     } catch (error) {
+        if (error instanceof jwt.TokenExpiredError) {
+            res.status(403).json({
+                message: "Refresh token expired."
+            })
+            return
+        }
         console.log(error)
         res.sendStatus(500)
     }

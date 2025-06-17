@@ -4,6 +4,8 @@ import { Link, useNavigate } from "react-router-dom"
 import type { CustomJwtPayload, UserProps } from "../types/UserTypes"
 import { AuthContext } from "../Context/AuthProvider"
 import { jwtDecode } from "jwt-decode";
+import { axiosInstance } from "../api/axios"
+import { useAxiosPrivate } from "../hooks/useAxiosPrivate"
 
 
 export const Home: React.FC = () => {
@@ -19,6 +21,8 @@ export const Home: React.FC = () => {
     const [formErrors, setFormErrors] = useState<Partial<UserProps> & { general?: string }>({})
 
     const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false)
+
+    const axiosPrivate = useAxiosPrivate()
 
 
     function formValidation(formData: UserProps): Partial<UserProps> {
@@ -52,9 +56,8 @@ export const Home: React.FC = () => {
         if (Object.keys(errors).length > 0) return
 
         try {
-            const response = await axios.post(import.meta.env.VITE_API_URL + "/login", form,
-                { withCredentials: true }
-            )
+            const response = await axiosInstance.post("/login", form,
+                { withCredentials: true })
 
             const decoded = jwtDecode<CustomJwtPayload>(response.data.accessToken)
 
@@ -63,7 +66,6 @@ export const Home: React.FC = () => {
                 roles: decoded.UserInfo?.roles,
                 accessToken: response?.data?.accessToken,
             })
-             console.log('Auth set:', decoded.UserInfo.roles)
 
             setForm({
                 email: '',

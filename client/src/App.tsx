@@ -8,6 +8,7 @@ import { RouteAuthentication } from "./components/RouteAuthentication"
 import { ROLES_LIST } from "./config/roles_list"
 import { Admin } from "./pages/Admin"
 import { Unauthorized } from "./pages/Unauthorized"
+import { Teste } from "./pages/Teste"
 
 
 function App() {
@@ -24,6 +25,10 @@ function App() {
 
         <Route element={<RouteAuthentication allowedRoles={[ROLES_LIST.Admin, ROLES_LIST.Editor, ROLES_LIST.User]} />} >
           <Route path="unauthorized" element={<Unauthorized />} />
+        </Route>
+
+        <Route element={<RouteAuthentication allowedRoles={[ROLES_LIST.Admin, ROLES_LIST.Editor]} />}>
+          <Route path="teste" element={<Teste />} />
         </Route>
 
         <Route path="*" element={<ErrorPage />} />

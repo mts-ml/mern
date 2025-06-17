@@ -31,10 +31,14 @@ export async function handleLogin(req: Request<{}, {}, UserProps>, res: Response
                 process.env.ACCESS_TOKEN_SECRET!,
                 { expiresIn: "30s" }
             )
-            console.log(`authController - Roles ${roles}`)            
 
             const refreshToken = jwt.sign(
-                { email: foundUser.email },
+                {
+                    UserInfo: {
+                        email: foundUser.email,
+                        roles: foundUser.roles
+                    }
+                },
                 process.env.REFRESH_TOKEN_SECRET!,
                 { expiresIn: '1d' }
             )
