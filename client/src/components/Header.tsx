@@ -37,8 +37,8 @@ export const Header: React.FC = () => {
                     {auth.accessToken &&
                         <>
                             <li>
-                                <NavLink to="/lounge" className={navLinkClass}>
-                                    Lounge
+                                <NavLink to="/menu" className={navLinkClass}>
+                                    Menu
                                 </NavLink>
                             </li>
 
