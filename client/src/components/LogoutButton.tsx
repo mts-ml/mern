@@ -11,7 +11,7 @@ export const LogoutButton = () => {
 
     const handleLogout = async () => {
         try {
-            await axiosInstance.post('/logout', {}, { withCredentials: true })
+            await axiosInstance.get('/logout', { withCredentials: true })
             setAuth({}) // Limpa o contexto
             navigate('/login')
         } catch (error) {
@@ -21,7 +21,11 @@ export const LogoutButton = () => {
 
 
     return (
-        <button type="submit" onClick={handleLogout}>
+        <button
+            className="cursor-pointer"
+            type="submit"
+            onClick={handleLogout}
+        >
             Logout
         </button>
     )
