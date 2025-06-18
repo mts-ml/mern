@@ -1,6 +1,7 @@
 import { jwtDecode } from "jwt-decode"
 import { createContext, useEffect, useState } from "react"
 import { axiosInstance } from "../api/axios";
+import type { UserProps } from "../types/UserTypes";
 
 
 interface ProviderProps {
@@ -17,6 +18,10 @@ interface ContextData {
     auth: AuthData,
     setAuth: React.Dispatch<React.SetStateAction<AuthData>>
     loading: boolean
+    formErrors: Partial<UserProps> & { general?: string }
+    setFormErrors: React.Dispatch<React.SetStateAction<Partial<UserProps> & {
+        general?: string;
+    }>>
 }
 
 interface TokenProps {
@@ -30,7 +35,9 @@ interface TokenProps {
 const defaultContextValue: ContextData = {
     auth: {},
     setAuth: () => { },
-    loading: true
+    loading: true,
+    formErrors: {},
+    setFormErrors: () => { }
 }
 
 export const AuthContext = createContext<ContextData>(defaultContextValue)
@@ -40,7 +47,9 @@ export const AuthProvider: React.FC<ProviderProps> = ({ children }) => {
     const [auth, setAuth] = useState<AuthData>({})
     const [loading, setLoading] = useState<boolean>(true)
 
+    const [formErrors, setFormErrors] = useState<Partial<UserProps> & { general?: string }>({})
 
+    
     useEffect(() => {
         let isMounted = true
 
@@ -98,7 +107,9 @@ export const AuthProvider: React.FC<ProviderProps> = ({ children }) => {
         <AuthContext.Provider value={{
             auth,
             setAuth,
-            loading
+            loading,
+            formErrors,
+            setFormErrors
         }}>
             {children}
         </AuthContext.Provider>
