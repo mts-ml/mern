@@ -5,7 +5,7 @@ export interface UserProps {
     password: string
 }
 
-export type LoginErrors = Partial<Record<keyof UserProps, string[]>>
+export type RegisterErrors = Partial<Record<keyof UserProps, string[]>>
 
 export interface CustomJwtPayload extends JwtPayload{
   UserInfo: {
