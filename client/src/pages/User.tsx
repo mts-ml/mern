@@ -12,7 +12,7 @@ export const User: React.FC = () => {
     }
 
     return (
-        <main className="min-h-dvh p-8 bg-neutral-900 text-white">
+        <main className="min-h-[calc(100dvh-64px)] pt-20 p-8 bg-neutral-900 text-white">
             <section className="max-w-xl mx-auto bg-neutral-800 p-8 rounded-lg shadow-lg">
                 <h1 className="text-4xl text-[#8CDFD6] font-bold mb-6 text-center">
                     User Dashboard
