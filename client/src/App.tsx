@@ -5,7 +5,7 @@ import { Login } from "./pages/Login"
 import { Register } from "./pages/Register"
 import { Admin } from "./pages/Admin"
 import { Editor } from "./pages/Editor"
-import { Lounge } from "./pages/Lounge"
+import { Menu } from "./pages/Menu"
 import { Teste } from "./pages/Teste"
 import { User } from "./pages/User"
 import { Unauthorized } from "./pages/Unauthorized"
@@ -24,7 +24,7 @@ function App() {
         <Route path="register" element={<Register />} />
 
         <Route element={<RouteAuthentication allowedRoles={[ROLES_LIST.Admin, ROLES_LIST.Editor, ROLES_LIST.User]} />}>
-          <Route path="lounge" element={<Lounge />} />
+          <Route path="menu" element={<Menu />} />
         </Route>
 
         <Route element={<RouteAuthentication allowedRoles={[ROLES_LIST.Admin]} />} >
