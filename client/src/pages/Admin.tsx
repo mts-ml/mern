@@ -7,7 +7,7 @@ export const Admin: React.FC = () => {
 
 
     return (
-        <main className="min-h-dvh p-8 bg-neutral-900 text-white">
+        <main className="min-h-[calc(100dvh-64px)] pt-20 p-8 bg-neutral-900 text-white">
             <h1 className="text-4xl font-bold mb-6 text-center">Admin Dashboard</h1>
 
             <div className="overflow-x-auto">
