@@ -1,9 +1,6 @@
 import axios from "axios"
 import { useState } from "react"
-import type { LoginErrors, UserProps } from "../types/UserTypes"
-
-
-
+import type { RegisterErrors, UserProps } from "../types/UserTypes"
 
 
 export const Register: React.FC = () => {
@@ -12,13 +9,13 @@ export const Register: React.FC = () => {
         password: ""
     })
 
-    const [formErrors, setFormErrors] = useState<LoginErrors>({})
+    const [formErrors, setFormErrors] = useState<RegisterErrors>({})
 
     const [isSubmit, setSubmit] = useState<boolean>(false)
 
 
-    function formValidation(formData: UserProps): LoginErrors {
-        const error: LoginErrors = {}
+    function formValidation(formData: UserProps): RegisterErrors {
+        const error: RegisterErrors = {}
         const { email, password } = formData
 
         if (!email) {
@@ -95,7 +92,7 @@ export const Register: React.FC = () => {
             value: string
         }
 
-        const updatedForm = {...form, [name]: value}
+        const updatedForm = { ...form, [name]: value }
         setForm(updatedForm)
 
         const validationErrors = formValidation(form)
@@ -103,82 +100,88 @@ export const Register: React.FC = () => {
             ...prevState, [name]: validationErrors[name]
         }))
 
-    setSubmit(false)
-}
+        setSubmit(false)
+    }
 
 
-return (
-    <main className="relative min-h-[calc(100vh-64px)] bg-stone-200">
-        <h1 className="pt-20 font-medium text-center">REGISTER</h1>
-
-        <form
-            onSubmit={handleSubmit}
-            className="text-white absolute left-1/2 top-1/2 -translate-1/2 p-8 bg-[#333] rounded w-1/3"
+    return (
+        <main className="relative min-h-[calc(100vh-64px)] bg-gradient-to-r text-white from-[#0a0a0a] via-[#2b8d6c] to-[#0a0a0a]"
         >
-            {/* EMAIL */}
-            <div className="flex flex-col">
-                <label htmlFor="email" className="font-medium cursor-pointer">E-mail:</label>
-                <input
-                    className="border rounded-[10px] pl-2 h-8"
-                    type="email"
-                    id="email"
-                    placeholder="example@gmail.com"
-                    name="email"
-                    value={form.email}
-                    onChange={handleInputChange}
-                    aria-describedby="emailError"
-                    aria-invalid={formErrors.email ? 'true' : 'false'}
-                />
-            </div>
+            <h1 className="pt-20 text-5xl uppercase font-extrabold text-center bg-gradient-to-r from-[#2b8d6c] via-[#78c2ad] to-[#2b8d6c] bg-clip-text drop-shadow-md">
+                sign up
+            </h1>
 
-            <div className="text-red-500 text-sm pt-1"
-                id="emailError"
-                aria-live="polite"
+
+            <form
+                onSubmit={handleSubmit}
+                className="text-white absolute left-1/2 top-1/2 -translate-1/2 p-8 bg-[#333] rounded w-1/3"
             >
-                {formErrors.email?.map((error, index) => (
-                    <p key={index}>{error}</p>
-                ))}
-            </div>
+                {/* EMAIL */}
+                <div className="flex flex-col">
+                    <label htmlFor="email" className="font-medium cursor-pointer">E-mail:</label>
+                    <input
+                        className="border rounded-[10px] pl-2 h-8"
+                        autoComplete="email"
+                        type="email"
+                        id="email"
+                        placeholder="example@gmail.com"
+                        name="email"
+                        value={form.email}
+                        onChange={handleInputChange}
+                        aria-describedby="emailError"
+                        aria-invalid={formErrors.email ? 'true' : 'false'}
+                    />
+                </div>
+
+                <div className="text-red-500 text-sm pt-1"
+                    id="emailError"
+                    aria-live="polite"
+                >
+                    {formErrors.email?.map((error, index) => (
+                        <p key={index}>{error}</p>
+                    ))}
+                </div>
 
 
 
-            {/* PASSWORD */}
-            <div className="flex flex-col mt-4">
-                <label htmlFor="password" className="font-medium cursor-pointer">Password:</label>
-                <input
-                    className="border rounded-[10px] pl-2 h-8"
-                    type="password"
-                    id="password"
-                    placeholder="example123&"
-                    name="password"
-                    value={form.password}
-                    onChange={handleInputChange}
-                    aria-describedby="passwordError"
-                    aria-invalid={formErrors.password ? 'true' : 'false'}
-                />
-            </div>
+                {/* PASSWORD */}
+                <div className="flex flex-col mt-4">
+                    <label htmlFor="password" className="font-medium cursor-pointer">Password:</label>
+                    <input
+                        className="border rounded-[10px] pl-2 h-8"
+                        autoComplete="off"
+                        type="password"
+                        id="password"
+                        placeholder="example123&"
+                        name="password"
+                        value={form.password}
+                        onChange={handleInputChange}
+                        aria-describedby="passwordError"
+                        aria-invalid={formErrors.password ? 'true' : 'false'}
+                    />
+                </div>
 
-            <div
-                className="text-red-500 text-sm pt-1"
-                id="passwordError"
-                aria-live="polite"
-            >
-                {formErrors.password?.map((error, index) => (
-                    <p key={index}>{error}</p>
-                ))}
-            </div>
+                <div
+                    className="text-red-500 text-sm pt-1"
+                    id="passwordError"
+                    aria-live="polite"
+                >
+                    {formErrors.password?.map((error, index) => (
+                        <p key={index}>{error}</p>
+                    ))}
+                </div>
 
-            <button
-                type="submit"
-                className="block mt-8 mb-4 border rounded px-2 py-1 mx-auto cursor-pointer hover:bg-white/30 transition-colors duration-300 ease-in-out"
-            >
-                Sign up
-            </button>
+                <button
+                    type="submit"
+                    className="block mt-8 mb-4 border rounded px-2 py-1 mx-auto cursor-pointer hover:bg-white/30 transition-colors duration-300 ease-in-out"
+                >
+                    Sign up
+                </button>
 
-            {isSubmit &&
-                <p className="text-center text-green-500 font-medium">Account successfully created!</p>
-            }
-        </form>
-    </main>
-)
+                {isSubmit &&
+                    <p className="text-center text-green-500 font-medium">Account successfully created!</p>
+                }
+            </form>
+        </main>
+    )
 }
