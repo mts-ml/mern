@@ -42,7 +42,6 @@ export function formValidation(req: Request<{}, {}, UserProps>, res: Response, n
     if (password.length < 8) {
         addError(errors, 'password', 'Password needs at least 8 characters')
     }
-
     
     const hasNumber = /\d/.test(password)
     const hasUpperCaseLetter = /[A-Z]/.test(password)
