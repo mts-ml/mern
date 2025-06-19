@@ -9,7 +9,7 @@ export const Register: React.FC = () => {
         password: ""
     })
 
-    const [formErrors, setFormErrors] = useState<RegisterErrors>({})
+    const [formErrors, setFormErrors] = useState<RegisterErrors & { general?: string }>({})
 
     const [isSubmit, setSubmit] = useState<boolean>(false)
 
@@ -72,7 +72,11 @@ export const Register: React.FC = () => {
             setSubmit(true)
         } catch (error) {
             if (axios.isAxiosError(error)) {
-                if (error.response?.status === 409) {
+                if (!error.response) {
+                    setFormErrors(prevState => ({
+                        ...prevState, general: "Server unavailable. Please try again later."
+                    }))
+                } else if (error.response?.status === 409) {
                     setFormErrors(prevState => ({
                         ...prevState,
                         email: [...(prevState.email || []), "Email already registered"]
@@ -170,6 +174,15 @@ export const Register: React.FC = () => {
                         <p key={index}>{error}</p>
                     ))}
                 </div>
+
+                {formErrors.general &&
+                    <p
+                        className="text-red-500 text-sm mt-6 text-center"
+                        aria-live="polite"
+                    >
+                        {formErrors.general}
+                    </p>
+                }
 
                 <button
                     type="submit"
