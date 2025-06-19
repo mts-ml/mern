@@ -9,7 +9,7 @@ import register from './routes/register'
 import login from './routes/login'
 import refresh from './routes/refresh'
 import logout from './routes/logout'
-import teste from './routes/teste'
+import teste from './routes/test'
 
 
 const PORT = process.env.PORT || 3500
@@ -34,7 +34,7 @@ app.get('/', (req: Request, res: Response) => {
 app.use('/register', register)
 app.use('/login', login)
 app.use('/refresh', refresh)
-app.use('/teste', teste)
+app.use('/test', teste)
 app.use('/logout', logout)
 
 
