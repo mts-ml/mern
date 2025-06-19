@@ -8,12 +8,12 @@ interface RequestWithRoles extends Request {
 
 export function verifyRoles(...allowedRoles: number[]) {
     return (req: RequestWithRoles, res: Response, next: NextFunction) => {
-        console.log(`Allowed roles: ${JSON.stringify(allowedRoles)}`)
-        console.log(`User roles: ${JSON.stringify(req.roles)}`)
+        console.log(`verifyRoles - Allowed roles: ${JSON.stringify(allowedRoles)}`)
+        console.log(`verifyRoles - User roles: ${JSON.stringify(req.roles)}`)
 
         if (!req?.roles) {
             res.status(401).json({
-                error: "User not authenticated"
+                message: "User not authenticated"
             })
             return
         }
@@ -21,7 +21,7 @@ export function verifyRoles(...allowedRoles: number[]) {
         const hasPermission = req.roles.some(role => allowedRoles.includes(role))
         if (!hasPermission) {
             res.status(403).json({
-                error: "User doesn't have authorization to perform this action"
+                message: "User doesn't have authorization to perform this action"
             })
             return
         }

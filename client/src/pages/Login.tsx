@@ -70,7 +70,7 @@ export const Login: React.FC = () => {
             setIsLoggedIn(true)
 
             setTimeout(() => {
-                navigate('/lounge')
+                navigate('/menu')
             }, 1500)
         } catch (error) {
             if (axios.isAxiosError(error)) {

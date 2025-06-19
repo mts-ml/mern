@@ -8,7 +8,7 @@ export async function handleLogout(req: Request, res: Response) {
     const refreshToken = req.cookies.jwt as string | undefined
     if (!refreshToken) {
         res.status(401).json({
-            error: "User unauthorized"
+            message: "User unauthorized"
         })
         return
     }
@@ -44,6 +44,5 @@ export async function handleLogout(req: Request, res: Response) {
     } catch (error) {
         console.log(error)
         res.sendStatus(500)
-        return        
     }
 }

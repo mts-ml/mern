@@ -10,7 +10,7 @@ export async function handleNewUser(req: Request<{}, {}, UserProps>, res: Respon
     const duplicate = await User.findOne({ email })
     if (duplicate) {
         res.status(409).json({
-            error: "Email already in database, choose another."
+            message: "Email already in database, choose another."
         })
         return
     }
@@ -27,12 +27,12 @@ export async function handleNewUser(req: Request<{}, {}, UserProps>, res: Respon
         console.log(`registerController - ${newUser}`) 
         
         res.status(201).json({
-            success: `New user ${newUser} created.`
+            message: `New user ${newUser} created.`
         })
     } catch (error) {
         console.log(error)
         res.status(500).json({
-            error: "Internal server error."
+            message: "Internal server error."
         })
     }
 }

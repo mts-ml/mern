@@ -63,7 +63,7 @@ export const AuthProvider: React.FC<ProviderProps> = ({ children }) => {
                         withCredentials: true, // Envia os cookies (incluindo o Refresh Token) junto com a requisição.
                         signal: controller.signal // Permite cancelar a requisição se o componente for desmontado.
                     })
-                console.log('Resposta do /refresh =>', response.data)
+                console.log('/refresh =>', response.data)
 
                 if (isMounted) {
                     const accessToken: string = response.data.accessToken
