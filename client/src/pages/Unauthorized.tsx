@@ -10,10 +10,10 @@ export const Unauthorized: React.FC = () => {
                 You do not have permission to access this page or perform this action.
             </p>
             <Link
-                to="/lounge"
+                to="/menu"
                 className="block rounded-md px-6 py-2 font-medium bg-teal-300 text-neutral-900 text-center transition-colors hover:bg-teal-400"
             >
-                Back to Lounge
+                Back to Menu
             </Link>
         </div>
     )
