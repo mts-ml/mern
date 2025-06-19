@@ -13,8 +13,9 @@ export const useRefreshToken = () => {
             )
 
             setAuth(prevState => {
-                console.log(`AccessToken anterior - ${JSON.stringify(prevState)}`)
-                console.log(`Novo accessToken - ${response.data.accessToken}`)
+                const changed = prevState.accessToken !== response.data.accessToken
+                console.log(`Token changed? ${changed}`)  
+                              
                 return { ...prevState, accessToken: response.data.accessToken }
             })
 
