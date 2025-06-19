@@ -13,7 +13,7 @@ export function verifyAccessToken(req: CustomRequest, res: Response, next: NextF
     const authHeader = req.headers['authorization']
     if (!authHeader || !authHeader.startsWith("Bearer ")) {
         res.status(400).json({
-            error: "Token missing or invalid"
+            message: "Token missing or invalid"
         })
         return
     }
@@ -31,11 +31,11 @@ export function verifyAccessToken(req: CustomRequest, res: Response, next: NextF
         next()
     } catch (error) {
         if (error instanceof jwt.TokenExpiredError) {
-            res.status(401).json({ error: "Token expired" })
+            res.status(401).json({ message: "Token expired" })
             return
         }
         if (error instanceof jwt.JsonWebTokenError) {
-            res.status(403).json({ error: "Invalid Token" })
+            res.status(403).json({ message: "Invalid Token" })
             return
         }
 

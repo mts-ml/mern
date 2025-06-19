@@ -8,7 +8,7 @@ export async function handleRefreshToken(req: Request, res: Response) {
     const refreshToken = req.cookies.jwt as string | undefined
     if (!refreshToken) {
         res.status(401).json({
-            error: "Token is missing or invalid."
+            message: "Token is missing or invalid."
         })
         return
     }

@@ -12,7 +12,7 @@ export async function handleLogin(req: Request<{}, {}, UserProps>, res: Response
         const foundUser = await User.findOne({ email })
         if (!foundUser) {
             res.status(401).json({
-                error: "Invalid credentials"
+                message: "Invalid credentials"
             })
             return
         }
@@ -60,13 +60,13 @@ export async function handleLogin(req: Request<{}, {}, UserProps>, res: Response
             res.json({ accessToken })
         } else {
             res.status(401).json({
-                error: "Invalid credentials"
+                message: "Invalid credentials"
             })
         }
     } catch (error) {
         console.log(error)
         res.status(500).json({
-            error: "Internal server error"
+            message: "Internal server error"
         })
     }
 }
