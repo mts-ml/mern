@@ -6,7 +6,7 @@ import { Register } from "./pages/Register"
 import { Admin } from "./pages/Admin"
 import { Editor } from "./pages/Editor"
 import { Menu } from "./pages/Menu"
-import { Teste } from "./pages/Teste"
+import { Test } from "./pages/Test"
 import { User } from "./pages/User"
 import { Unauthorized } from "./pages/Unauthorized"
 
@@ -42,7 +42,7 @@ function App() {
         </Route>
 
         <Route element={<RouteAuthentication allowedRoles={[ROLES_LIST.Admin, ROLES_LIST.Editor]} />}>
-          <Route path="teste" element={<Teste />} />
+          <Route path="test" element={<Test />} />
         </Route>
 
         <Route path="*" element={<ErrorPage />} />
