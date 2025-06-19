@@ -6,6 +6,7 @@ export const Menu: React.FC = () => {
         { path: "/admin", label: "Admin" },
         { path: "/editor", label: "Editor" },
         { path: "/user", label: "User" },
+        { path: "/test", label: "Test" },
     ]
 
 
