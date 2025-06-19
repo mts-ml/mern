@@ -30,10 +30,12 @@ export const useAxiosPrivate = () => {
 
                 // Se deu erro 401 (não autorizado) e ainda não tentamos renovar
                 if (error?.response?.status === 401 && !previousRequest?.sent) {
+                    console.debug("[Axios Interceptor] Token expired, attempting refresh...")
                     previousRequest.sent = true // Marca como tentado para não criar loop infinito
 
                     try {
                         const newAccessToken = await refresh()
+                        console.debug("[Axios Interceptor] Token refreshed successfully")
 
                         previousRequest.headers['Authorization'] = `Bearer ${newAccessToken}`
 
@@ -41,6 +43,7 @@ export const useAxiosPrivate = () => {
                         return axiosPrivate(previousRequest)
 
                     } catch (refreshError) {
+                        console.error("[Axios Interceptor] Failed to refresh token:", refreshError)
                         return Promise.reject(refreshError)
                     }
                 }
