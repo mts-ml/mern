@@ -41,7 +41,7 @@ function App() {
           <Route path="unauthorized" element={<Unauthorized />} />
         </Route>
 
-        <Route element={<RouteAuthentication allowedRoles={[ROLES_LIST.Admin, ROLES_LIST.Editor]} />}>
+        <Route element={<RouteAuthentication allowedRoles={[ROLES_LIST.Admin, ROLES_LIST.Editor, ROLES_LIST.User]} />}>
           <Route path="test" element={<Test />} />
         </Route>
 
