@@ -19,10 +19,18 @@ const app = express()
 connectDB()
 
 app.use(express.json())
+
+// CORS
+const allowedOrigins = process.env.NODE_ENV === 'production' ?
+process.env.FRONT_PROD_URL
+:
+process.env.FRONT_DEV_URL
+
 app.use(cors({
-    origin: "http://localhost:5173",
+    origin: allowedOrigins,
     credentials: true
 }))
+
 app.use(cookieParser())
 
 app.get('/', (req: Request, res: Response) => {
