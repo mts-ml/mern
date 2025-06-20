@@ -1,12 +1,34 @@
-import { useEffect, useState } from "react"
+import { useContext, useEffect, useState } from "react"
 import { useAxiosPrivate } from "../hooks/useAxiosPrivate"
+import { jwtDecode, type JwtPayload } from "jwt-decode"
+import { AuthContext } from "../Context/AuthProvider"
 
 
 export const Test: React.FC = () => {
     const [response, setResponse] = useState<string>("")
     const [isLoading, setIsLoading] = useState<boolean>(false)
     const [error, setError] = useState<string>("")
+    const [countdown, setCountdown] = useState<number>(0)
     const axiosPrivate = useAxiosPrivate()
+
+    const { auth } = useContext(AuthContext)
+
+
+    function getTokenExpiration(token: string) {
+        const decodedToken = jwtDecode<JwtPayload>(token)
+
+        if (!decodedToken.exp) {
+            console.warn("Token does not have an expiration time.")
+            return 0
+        }
+
+        const exp = decodedToken.exp * 1000 // converte para milissegundos
+        const now = Date.now()
+        const timeLeft = exp - now
+
+        return timeLeft > 0 ? Math.floor(timeLeft / 1000) : 0
+    }
+
 
     async function getData() {
         setIsLoading(true)
@@ -25,11 +47,35 @@ export const Test: React.FC = () => {
         }
     }
 
+    // Efeito para contar o tempo até expirar
+    useEffect(() => {
+        if (!auth.accessToken) {
+            setCountdown(0)
+            return
+        }
+
+        const timeLeft = getTokenExpiration(auth.accessToken)
+        setCountdown(timeLeft)
+
+        const interval = setInterval(() => {
+            setCountdown(prevState => {
+                if (prevState <= 1) {
+                    clearInterval(interval)
+                    return 0
+                }
+
+                return prevState - 1
+            })
+        }, 1000)
+
+        return () => clearInterval(interval)
+    }, [auth.accessToken])
+
+
     useEffect(() => {
         getData()
     }, [axiosPrivate])
 
-    
     return (
         <main className="relative min-h-[calc(100vh-64px)] bg-gradient-to-r text-white from-[#0a0a0a] via-[#2b8d6c] to-[#0a0a0a]">
             <h1 className="pt-20 text-5xl uppercase font-extrabold text-center bg-gradient-to-r from-[#2b8d6c] via-[#78c2ad] to-[#2b8d6c] bg-clip-text text-transparent drop-shadow-md">
@@ -37,6 +83,13 @@ export const Test: React.FC = () => {
             </h1>
 
             <section className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 p-8 bg-[#333] rounded w-3/6 flex flex-col items-center justify-center gap-4">
+                <div className="text-sm text-white/70">
+                    Access Token expires in:{" "}
+                    <span className={`font-bold ${countdown <= 5 ? "text-red-500" : "text-green-400"}`}>
+                        {countdown}s
+                    </span>
+                </div>
+
                 {isLoading && <p className="text-white font-semibold">Loading...</p>}
 
                 {error && (
