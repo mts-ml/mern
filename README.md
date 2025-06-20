@@ -125,6 +125,15 @@ npm run dev
 > ⚠️ O tempo de expiração do Access Token foi propositalmente reduzido para **30 segundos**, justamente para que você possa visualizar claramente o processo de renovação automática.  
 Em produção, recomenda-se tempos maiores (ex.: 5, 10, 15 minutos) dependendo da necessidade do sistema.
 
+## 📝 Licença
+
+Este projeto está licenciado sob a Licença MIT.  
+Consulte o arquivo [LICENSE](./LICENSE) para mais detalhes.
+
+
+
+
+
 <br /><br /><br />
 # EN
 
@@ -253,3 +262,8 @@ npm run dev
 
 > ⚠️ The access token expiration is intentionally set to **30 seconds** to clearly demonstrate how the automatic token renewal process works.  
 In production, it is recommended to use longer expiration times (e.g., 5, 10, or 15 minutes) depending on the system requirements.
+
+## 📝 License
+
+This project is licensed under the MIT License.  
+See the [LICENSE](./LICENSE) file for details.
