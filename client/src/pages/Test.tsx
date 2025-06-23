@@ -8,31 +8,23 @@ export const Test: React.FC = () => {
     const [response, setResponse] = useState<string>("")
     const [isLoading, setIsLoading] = useState<boolean>(false)
     const [error, setError] = useState<string>("")
-    const [countdown, setCountdown] = useState<number>(0)
+    const [tokenCountdown, setTokenCountdown] = useState<number>(0)
     const axiosPrivate = useAxiosPrivate()
 
     const { auth } = useContext(AuthContext)
 
 
-    function getTokenExpiration(token: string) {
+    function getTokenExpiration(token: string, clockSkew: number) {
         const decodedToken = jwtDecode<JwtPayload>(token)
+        if (!decodedToken.exp) return 0
 
-        // iat - Issuad At - iat: 1719165200 → 23 de junho de 2025, 15:00:00 UTC. Exemplo
-        // exp - Expiration Time - exp: 1719165596 → 23 de junho de 2025, 15:06:36 UTC. Exemplo
+        const expirationTimeInMs = decodedToken.exp * 1000 // vem em s, transforma em ms.
+        const timeAdjusted = Date.now() + clockSkew // cliente ajustado para o horário do servidor
 
-        if (!decodedToken.exp) {
-            console.warn("Token does not have an expiration time.")
-            return 0
-        }
+        const timeLeftSeconds = Math.floor((expirationTimeInMs - timeAdjusted) / 1000)
 
-        const exp = decodedToken.exp * 1000 // transformar para milissegundos
-        const now = Date.now()
-
-        const timeLeft = Math.floor((exp - now) / 1000) // tempo em segundos
-
-        return timeLeft > 0 ? timeLeft : 0
+        return timeLeftSeconds > 0 ? timeLeftSeconds : 0
     }
-
 
     async function getData() {
         setIsLoading(true)
@@ -54,15 +46,15 @@ export const Test: React.FC = () => {
     // Efeito para contar o tempo até expirar
     useEffect(() => {
         if (!auth.accessToken) {
-            setCountdown(0)
+            setTokenCountdown(0)
             return
         }
 
-        const timeLeft = getTokenExpiration(auth.accessToken)
-        setCountdown(timeLeft)
+        const timeLeft = getTokenExpiration(auth.accessToken, auth.clockSkew ?? 0)
+        setTokenCountdown(timeLeft)
 
         const interval = setInterval(() => {
-            setCountdown(prevState => {
+            setTokenCountdown(prevState => {
                 if (prevState <= 1) {
                     clearInterval(interval)
                     return 0
@@ -73,7 +65,7 @@ export const Test: React.FC = () => {
         }, 1000)
 
         return () => clearInterval(interval)
-    }, [auth.accessToken])
+    }, [auth.accessToken, auth.clockSkew])
 
 
     useEffect(() => {
@@ -89,8 +81,8 @@ export const Test: React.FC = () => {
             <section className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 p-8 bg-[#333] rounded w-3/6 flex flex-col items-center justify-center gap-4">
                 <div className="text-sm text-white/70">
                     Access Token expires in:{" "}
-                    <span className={`font-bold ${countdown <= 5 ? "text-red-500" : "text-green-400"}`}>
-                        {countdown}s
+                    <span className={`font-bold ${tokenCountdown <= 5 ? "text-red-500" : "text-green-400"}`}>
+                        {tokenCountdown}s
                     </span>
                 </div>
 
