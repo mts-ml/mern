@@ -22,9 +22,9 @@ app.use(express.json())
 
 // CORS
 const allowedOrigins = process.env.NODE_ENV === 'production' ?
-process.env.FRONT_PROD_URL
+process.env.FRONTEND_PROD_URL
 :
-process.env.FRONT_DEV_URL
+process.env.FRONTEND_DEV_URL
 
 app.use(cors({
     origin: allowedOrigins,
