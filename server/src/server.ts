@@ -10,6 +10,7 @@ import login from './routes/login.js'
 import refresh from './routes/refresh.js'
 import logout from './routes/logout.js'
 import teste from './routes/test.js'
+import serverTime from './routes/serverTime.js'
 
 
 const PORT = process.env.PORT || 3500
@@ -44,6 +45,7 @@ app.use('/login', login)
 app.use('/refresh', refresh)
 app.use('/test', teste)
 app.use('/logout', logout)
+app.use('/server-time', serverTime)
 
 
 mongoose.connection.once('open', () => {
