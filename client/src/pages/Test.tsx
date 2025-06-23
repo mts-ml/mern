@@ -17,16 +17,20 @@ export const Test: React.FC = () => {
     function getTokenExpiration(token: string) {
         const decodedToken = jwtDecode<JwtPayload>(token)
 
-        if (!decodedToken.exp) {
-            console.warn("Token does not have an expiration time.")
+        // iat - Issuad At - iat: 1719165200 → 23 de junho de 2025, 15:00:00 UTC. Exemplo
+        // exp - Expiration Time - exp: 1719165596 → 23 de junho de 2025, 15:06:36 UTC. Exemplo
+
+        if (!decodedToken.exp || !decodedToken.iat) {
+            console.warn("Token is missing information.")
             return 0
         }
 
-        const exp = decodedToken.exp * 1000 // converte para milissegundos
-        const now = Date.now()
-        const timeLeft = exp - now
+        const totalDuration = decodedToken.exp - decodedToken.iat
+        const timeInSeconds = Math.floor(Date.now() / 1000)
+        const timePassed = timeInSeconds - decodedToken.iat
+        const timeLeft = totalDuration - timePassed
 
-        return timeLeft > 0 ? Math.floor(timeLeft / 1000) : 0
+        return timeLeft > 0 ? timeLeft : 0
     }
 
 
