@@ -54,12 +54,21 @@ export const Login: React.FC = () => {
             const response = await axiosInstance.post("/login", form,
                 { withCredentials: true })
 
+            // Acessa '/server-time' e pega o Date.now() enviado do servidor.
+            const serverTimeResponse = await axiosInstance.get('/server-time')
+            const serverTime = serverTimeResponse.data.serverTime
+            const clientTime = Date.now()
+
+            //Calcula diferença do tempo
+            const clockSkew = serverTime - clientTime
+
             const decoded = jwtDecode<CustomJwtPayload>(response.data.accessToken)
 
             setAuth({
                 email: decoded.UserInfo?.email,
                 roles: decoded.UserInfo?.roles,
                 accessToken: response?.data?.accessToken,
+                clockSkew
             })
 
             setForm({
