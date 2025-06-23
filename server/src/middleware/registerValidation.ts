@@ -1,8 +1,6 @@
-import { Request, Response, NextFunction } from "express";
-import { UserProps } from "../types/userTypes";
-import { addError } from "../utils/utils";
-
-
+import { Request, Response, NextFunction } from "express"
+import { UserProps } from "../types/userTypes.js"
+import { addError } from "../utils/utils.js"
 
 
 export function formValidation(req: Request<{}, {}, UserProps>, res: Response, next: NextFunction) {

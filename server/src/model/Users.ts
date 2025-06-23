@@ -1,5 +1,5 @@
 import mongoose from 'mongoose'
-import { UserProps } from '../types/userTypes'
+import { UserProps } from '../types/userTypes.js'
 const Schema = mongoose.Schema
 
 

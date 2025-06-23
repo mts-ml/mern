@@ -1,7 +1,7 @@
-import { Request, Response } from "express";
-import { User } from "../model/Users";
+import { Request, Response } from "express"
+import { User } from "../model/Users.js"
 import jwt from 'jsonwebtoken'
-import { CustomJwtPayload } from "../types/userTypes";
+import { CustomJwtPayload } from "../types/userTypes.js"
 
 
 export async function handleRefreshToken(req: Request, res: Response) {

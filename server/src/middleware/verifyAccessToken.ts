@@ -1,6 +1,6 @@
-import { NextFunction, Request, Response } from "express";
+import { NextFunction, Request, Response } from "express"
 import jwt from 'jsonwebtoken'
-import { CustomJwtPayload } from "../types/userTypes";
+import { CustomJwtPayload } from "../types/userTypes.js"
 
 
 interface CustomRequest extends Request {

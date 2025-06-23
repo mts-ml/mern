@@ -1,7 +1,7 @@
 import bcrypt from 'bcrypt'
 import { Request, Response } from 'express'
-import { UserProps } from '../types/userTypes'
-import { User } from '../model/Users'
+import { UserProps } from '../types/userTypes.js'
+import { User } from '../model/Users.js'
 
 
 export async function handleNewUser(req: Request<{}, {}, UserProps>, res: Response) {

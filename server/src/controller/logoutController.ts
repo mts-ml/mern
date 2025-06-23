@@ -1,5 +1,5 @@
-import { Request, Response } from "express";
-import { User } from "../model/Users";
+import { Request, Response } from "express"
+import { User } from "../model/Users.js"
 
 
 export async function handleLogout(req: Request, res: Response) {

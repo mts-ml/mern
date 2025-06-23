@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from "express"
-import { LoginErrors, UserProps } from "../types/userTypes"
-import { addError } from "../utils/utils"
+import { LoginErrors, UserProps } from "../types/userTypes.js"
+import { addError } from "../utils/utils.js"
 
 
 export async function loginValidation(req: Request<{}, {}, UserProps>, res: Response, next: NextFunction) {

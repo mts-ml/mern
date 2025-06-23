@@ -3,13 +3,13 @@ import express, { Request, Response } from 'express'
 import cors from 'cors'
 import cookieParser from 'cookie-parser'
 import mongoose from 'mongoose'
-import { connectDB } from './config/dbConn'
+import { connectDB } from './config/dbConn.js'
 
-import register from './routes/register'
-import login from './routes/login'
-import refresh from './routes/refresh'
-import logout from './routes/logout'
-import teste from './routes/test'
+import register from './routes/register.js'
+import login from './routes/login.js'
+import refresh from './routes/refresh.js'
+import logout from './routes/logout.js'
+import teste from './routes/test.js'
 
 
 const PORT = process.env.PORT || 3500
