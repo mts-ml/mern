@@ -12,6 +12,7 @@ export interface AuthData {
     email?: string;
     roles?: number[];
     accessToken?: string;
+    clockSkew?: number
 }
 
 interface ContextData {
@@ -37,7 +38,7 @@ const defaultContextValue: ContextData = {
     setAuth: () => { },
     loading: true,
     formErrors: {},
-    setFormErrors: () => { }
+    setFormErrors: () => { },
 }
 
 export const AuthContext = createContext<ContextData>(defaultContextValue)
