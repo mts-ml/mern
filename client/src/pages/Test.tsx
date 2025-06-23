@@ -20,15 +20,15 @@ export const Test: React.FC = () => {
         // iat - Issuad At - iat: 1719165200 → 23 de junho de 2025, 15:00:00 UTC. Exemplo
         // exp - Expiration Time - exp: 1719165596 → 23 de junho de 2025, 15:06:36 UTC. Exemplo
 
-        if (!decodedToken.exp || !decodedToken.iat) {
-            console.warn("Token is missing information.")
+        if (!decodedToken.exp) {
+            console.warn("Token does not have an expiration time.")
             return 0
         }
 
-        const totalDuration = decodedToken.exp - decodedToken.iat
-        const timeInSeconds = Math.floor(Date.now() / 1000)
-        const timePassed = timeInSeconds - decodedToken.iat
-        const timeLeft = totalDuration - timePassed
+        const exp = decodedToken.exp * 1000 // transformar para milissegundos
+        const now = Date.now()
+
+        const timeLeft = Math.floor((exp - now) / 1000) // tempo em segundos
 
         return timeLeft > 0 ? timeLeft : 0
     }
