@@ -1,7 +1,7 @@
 import { Link, NavLink } from "react-router-dom"
-import { LogoutButton } from "./LogoutButton";
-import { useContext } from "react";
-import { AuthContext } from "../Context/AuthProvider";
+import { LogoutButton } from "./LogoutButton"
+import { useContext } from "react"
+import { AuthContext } from "../Context/AuthProvider"
 
 
 export const Header: React.FC = () => {
