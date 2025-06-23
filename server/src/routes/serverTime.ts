@@ -1,5 +1,5 @@
 import express from 'express'
-import { getServerTime } from '../utils/utils'
+import { getServerTime } from '../utils/utils.js'
 
 
 const router = express.Router()
