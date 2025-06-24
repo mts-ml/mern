@@ -1,6 +1,7 @@
 import axios from "axios"
 import { useState } from "react"
 import type { RegisterErrors, UserProps } from "../types/UserTypes"
+import { useNavigate } from "react-router-dom"
 
 
 export const Register: React.FC = () => {
@@ -12,6 +13,8 @@ export const Register: React.FC = () => {
     const [formErrors, setFormErrors] = useState<RegisterErrors & { general?: string }>({})
 
     const [isSubmit, setSubmit] = useState<boolean>(false)
+
+    const navigate = useNavigate()
 
 
     function formValidation(formData: UserProps): RegisterErrors {
@@ -70,6 +73,10 @@ export const Register: React.FC = () => {
             })
 
             setSubmit(true)
+
+            setTimeout(() => {
+                navigate('/login')
+            }, 1500)
         } catch (error) {
             if (axios.isAxiosError(error)) {
                 if (!error.response) {
