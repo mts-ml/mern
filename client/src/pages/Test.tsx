@@ -82,7 +82,7 @@ export const Test: React.FC = () => {
                 <div className="text-sm text-white/70">
                     Access Token expires in:{" "}
                     <span className={`font-bold ${tokenCountdown <= 5 ? "text-red-500" : "text-green-400"}`}>
-                        {tokenCountdown}s
+                        {tokenCountdown === 0 ? "Expired" : `${tokenCountdown}s`}
                     </span>
                 </div>
 
