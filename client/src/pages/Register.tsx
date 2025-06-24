@@ -106,7 +106,7 @@ export const Register: React.FC = () => {
         const updatedForm = { ...form, [name]: value }
         setForm(updatedForm)
 
-        const validationErrors = formValidation(form)
+        const validationErrors = formValidation(updatedForm)
         setFormErrors(prevState => ({
             ...prevState, [name]: validationErrors[name]
         }))
