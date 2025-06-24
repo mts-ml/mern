@@ -83,20 +83,38 @@ export const Login: React.FC = () => {
             }, 1500)
         } catch (error) {
             if (axios.isAxiosError(error)) {
-                if (error.response?.status === 401) {
-                    setFormErrors(prevState => ({
-                        ...prevState,
-                        general: "Invalid credentials"
-                    }))
-                } else if (!error.response) {
-                    setFormErrors(prevState => ({
-                        ...prevState, general: "No server response"
-                    }))
+                if (error.response) {
+                    switch (error.response.status) {
+                        case 401:
+                            setFormErrors(prevState => ({
+                                ...prevState,
+                                general: "Invalid credentials"
+                            }))
+                            break
+                        case 404: {
+                            setFormErrors(prevState => ({
+                                ...prevState, general: "No server response"
+                            }))
+                            break
+                        }
+                        default:
+                            console.log(`Unexpected error - ${error.response?.data?.error}`)
+
+                            setFormErrors(prevState => ({
+                                ...prevState, general: "An unexpected error occurred. Please try again."
+                            }))
+                    }
                 } else {
-                    console.log(`Unexpected error - ${error.response?.data?.error}`)
+                    console.log(`Unknown error - ${error}`)
+
+                    setFormErrors(prevState => ({
+                        ...prevState, general: "Unable to connect to the server. Please check your internet connection."
+                    }))
                 }
             } else {
-                console.log(`Unknown error - ${error}`)
+                setFormErrors(prevState => ({
+                    ...prevState, general: "An unexpected error occurred. Please try again."
+                }))
             }
         }
     }
