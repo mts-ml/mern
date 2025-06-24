@@ -6,6 +6,10 @@ Este projeto é uma aplicação full-stack que implementa um sistema completo de
 O objetivo é demonstrar de forma clara como funciona todo o fluxo de autenticação, proteção de rotas, renovação de token e logout seguro.
 <br /><br />
 
+👉 [Acesse o projeto - TRUST LOCK](https://trust-lock.netlify.app)
+
+<br/>
+
 ## 🚀 Tecnologias Utilizadas
 
 - **Front-end:** React, React Router, Axios, TypeScript, TailwindCSS
@@ -143,6 +147,10 @@ This project is a full-stack application that implements a complete authenticati
 
 The goal is to demonstrate how the authentication flow works, including route protection, token renewal, and secure logout.
 <br /><br />
+
+👉 [Access project - TRUST LOCK](https://trust-lock.netlify.app)
+
+<br />
 
 ## 🚀 Technologies Used
 
